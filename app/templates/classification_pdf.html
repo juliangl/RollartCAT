@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <title>RollartCAT</title>
+    {% load i18n %}
+    <style>
+        body{
+            font-size: 14px;
+        }
+        p {
+            font-size: 16px;
+            padding-top: -20px;
+            
+        }
+        th{
+            text-align: left;
+        }
+        td{
+            padding-right:2px;
+        }
+        tr {
+            padding-top:4px;
+        }
+        #box thead tr {
+            text-align: left;
+            border-top: 1px solid black;
+            padding-top: 4px;
+        }
+    
+        #box thead tr {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    
+        #box tbody tr {
+            border-bottom: 1px solid black;
+            padding: 0;
+        }
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 30pt; width: 535t; top: 30pt; height: 90pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 535pt; top: 90pt; height: 700pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 535pt; top: 795pt; height: 50pt;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header_content">
+        <table style="padding-top:-20px;"><tr><td width="665px" style="padding-left:0px;padding-top:0px;">
+        {{competition.description|upper}}-{{category.description|upper}}-{{level.description|upper}}</br>
+        {{competition.place|upper}}</br>
+        {{competition.date}}
+        </td>
+        <td valing="top"><img src="http://localhost:8000/static/logo.png" width="60px" ></td>
+        </tr></table>
+        <p style="text-align:center;font-weight:bold;">{% trans "CLASSIFICATION" %} {% trans "PROGRAM" %} {{program.description|upper}}</p>
+    </div>
+    <div id="footer_content" style="text-align:right;"><hr>
+        {% trans "page" %} <pdf:pagenumber>  
+    </div>
+    <table id="box" repeat="1">
+        <thead>
+        <tr style="background-color:#333;color:#fff;padding-top:4px;">
+            <th width="40px">{% trans "Place" %}</th>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Club" %}</th>
+            <th width="50px" style="text-align: center;">{% trans "E.T." %}</th>
+            <th width="50px" style="text-align: center;">{% trans "I.A." %}</th>
+            <th width="50px" style="text-align: center;">{% trans "Ded." %}</th>
+            <th width="50px" style="text-align: center;">{% trans "Total" %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in eves %}
+        {% if forloop.counter|divisibleby:2 %}
+        <tr style="background-color:#aaa;padding-top:4px">
+        {% else %}
+        <tr style="padding-top:4px;">
+        {% endif %}
+            <td  style="text-align: right;">{{row.place}}</td>
+            <td>{{row.skater.name}}</td>
+            <td>{{row.skater.club.name}}</td>
+            <td style="text-align: right;">{{row.et}}</td>
+            <td style="text-align: right;">{{row.ia}}</td>
+            <td style="text-align: right;">{{row.deduction}}</td>
+            <td style="text-align: right;">{{row.total}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+{% load i18n %}
+
+
+<div class="jumbotron text-center bg-transparent">
+  <img src="/static/rollartCAT.png" class="rounded mx-auto d-block">
+  <h5 class="display-4">{% trans "Benvingut a RollartCAT"%}!</h5>
+  <hr class="my-4">
+  {% if not request.user.is_authenticated %}
+  <p><h1>{% trans "Identifica't per continuar" %}.</h1></p>
+  {% endif %}
+</div>  
+
+{% for message in messages %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  {% if message.tags == 'info' %}
+    <script>
+        var m= "{{ message }}";
+        swal("Blocked !",m ,"info")
+    </script>
+    {% elif message.tags == 'error' %}
+    <script>
+      var m= "{{ message }}";
+      swal("Denied !",m ,"error")
+    </script>
+
+  {% endif %}
+
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <title>RollartCAT</title>
+    {% load i18n %}
+    {% load static %}
+    <style>
+        body{
+            font-size: 12px;
+        }
+        p {
+            font-size: 16px;
+            padding-top: -20px;
+            
+        }
+        th{
+            text-align: left;
+        }
+    
+        #box thead tr {
+            text-align: left;
+            border-top: 1px solid black;
+            padding-top: 4px;
+        }
+    
+        #box thead tr {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    
+        #box tbody tr {
+            /*border-bot</span>tom: 1px solid black;*/
+            padding: 0;
+        }
+
+        @page {
+            size: a4 portrait;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 30pt; width: 535t; top: 30pt; height: 90pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 30pt; width: 535pt; top: 90pt; height: 700pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 30pt; width: 535pt; top: 795pt; height: 50pt;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header_content">
+        <table style="padding-top:-20px;"><tr><td width="665px" style="padding-left:0px;padding-top:0px;">
+        {{competition.description|upper}}-{{category.description|upper}}-{{level.description|upper}}</br>
+        {{competition.place|upper}}</br>
+        {{competition.date}}
+        </td>
+        <td valing="top"><img src="http://localhost:8000/static/logo.png" width="60px" ></td>
+        </tr></table>
+        <p style="text-align:center;font-weight:bold;">{% trans "DETAIL JUDGES" %} {% trans "PROGRAM" %} {{program.description|upper}}</p>
+    </div>
+    <div id="footer_content" style="text-align:right;"><hr>
+        {% trans "page" %} <pdf:pagenumber>  
+    </div>
+    <table id="box" style="background-color:#ddd">
+        <thead>
+        <tr>
+            <th width="40px">{% trans "Place" %}</th>
+            <th width="300px">{% trans "Competitor" %}</th>
+            <th width="150px">{% trans "Delegation" %}</th>
+            <th width="70px">{% trans "Elements" %}</th>
+            <th width="90px">{% trans "Components" %}</th>
+            <th width="90px">{% trans "Deductions" %}</th>
+            <th width="40px">{% trans "Total" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{row.place}}</td>
+            <td>{{row.skater.name|upper}}</td>
+            <td>{{row.skater.club.territorial.description|upper}}</td>
+            <td>{{row.et}}</td>
+            <td>{{row.ia}}</td>
+            <td>{{row.deduction}}</td>
+            <td>{{row.total}}</td>
+        </tr>
+        <tr style="padding-top:-1px">
+            <td></td>
+            <td style="font-size:small;">{{row.skater.club.name|upper}}</td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+        </tr>
+    </tbody>
+    </table>
+    <table >
+        <thead>
+            <tr style="background-color:#333;color:#fff;padding-top:4px;">
+                <th width="20px">#</th>
+                <th width="150px">{% trans "Executed item" %}</th>
+                <th width="50px"></th>
+                <th width="260px">{% trans "Information" %}</th>
+                <th width="50px">Base</th>
+                <th width="50px">Bonus</th>
+                <th width="50px">QOE</th>
+                <th width="30px">J1</th>
+                <th width="30px">J2</th>
+                <th width="30px">J3</th>
+                <th width="50px">valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sco in score%}
+            <tr style="padding-top:4px;">
+                <td></td>
+                <td>{{sco.element.type.description}}</td>
+                <td>{{sco.element.type.id}}{{sco.element.element.id}}</td>
+                <td>{{sco.element.element.description}}{{sco.comment}}</td>
+                <td>{{sco.base}}</td>
+                <td>{{sco.bonus}}</td>
+                <td>{{sco.qoe}}</td>
+                <td>{{sco.j1}}</td>
+                <td>{{sco.j2}}</td>
+                <td>{{sco.j3}}</td>
+                <td>{{sco.total}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="padding-top:4px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{s.base__sum}}</td>
+                <td>{{s.bonus__sum}}</td>
+                <td>{{s.qoe__sum}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{s.total__sum}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table >
+        <thead>
+            <tr style="background-color:#333;color:#fff;padding-top:4px;">
+                <th width="480px">{% trans "Artistic impression" %}</th>
+                <th width="50px">Factor</th>
+                <th width="50px"></th>
+                <th width="50px"></th>
+                <th width="30px">J1</th>
+                <th width="30px">J2</th>
+                <th width="30px">J3</th>
+                <th width="50px">valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sco in scoreia%}
+            <tr style="padding-top:4px;">
+                <td>{{sco.component.component.description}}</td>
+                <td>{{factor}}</td>
+                <td></td>
+                <td></td>
+                <td>{{sco.j1}}</td>
+                <td>{{sco.j2}}</td>
+                <td>{% if level.id > 7 %}{{sco.j3}}{% endif %}</td>
+                <td>{{sco.total}}</td>
+            </tr>
+            {% endfor %}
+            <tr style="padding-top:4px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{sia.total__sum}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table >
+        <thead>
+            <tr style="background-color:#333;color:#fff;padding-top:4px;">
+                <th width="720px">{% trans "Deductions" %}</th>
+                <th width="50px">valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="padding-top:4px;">
+                <td>{% trans "Deductions" %}</td>
+                <td>{{row.deduction}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="box">
+        <thead>
+            <tr style="padding-top:4px;">
+                <td style="text-align: right;">Especialista: </td><td>&nbsp;{% if judges.especialista %}{{juges.especialita|upper}}{% else %}ESPECIALISTA{% endif %}</td>
+                <td style="text-align: right;">Jutge/essa àrbitre: </td><td>&nbsp;{% if judges.arbitre %}{{juges.arbitre|upper}}{% else %}ÀRBITRE{% endif %}</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="padding-top:4px;">
+                <td style="text-align: right;">Operador/a dades: </td><td>&nbsp;{% if judges.operator %}{{juges.operator|upper}}{% else %}OPERATOR{% endif %}</td>
+                <td style="text-align: right;">Jutge/essa 1: </td><td>&nbsp;</td>
+            </tr>
+            <tr style="padding-top:4px;">
+                <td style="text-align: right;">Controlador/a: </td><td>&nbsp;{% if judges.controller %}{{juges.controller|upper}}{% else %}CONTROLLER{% endif %}</td>
+                <td style="text-align: right;">Jutge/essa 2: </td><td>&nbsp;</td>
+            </tr>
+            <tr style="padding-top:4px;">
+                <td style="text-align: right;">Assitent/a: </td><td>&nbsp;{% if judges.assistant %}{{juges.assistant|upper}}{% else %}ASSISTANT{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

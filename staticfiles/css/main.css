@@ -1,0 +1,20 @@
+body {
+background: #ffffff; /* fallback for old browsers */
+/*background: -webkit-linear-gradient(to bottom, #ece9e6, #ffffff); /* Chrome 10-25, Safari 5.1-6 */
+/*background: linear-gradient(to bottom, #ece9e6, #ffffff); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.dropdown-item{
+  color: #aaa;
+}
+.dropdown-item:hover{
+  color: #fff;
+  background: #343a40 !important;
+}
+
+.table{
+  margin-bottom: 0px !important;
+}
+
+.bg-blue100{
+  background: #cfe2ff;
+}

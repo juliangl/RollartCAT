@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+{% load i18n %}
+{% load humanize %}
+
+<img src="/static/rollartCAT.png" class="rounded mx-auto d-block">
+<h2 class="text-center">RollartCAT</h2>
+
+{% if message %}
+<div class="alert alert-danger alert-dismissible fade show text-danger" role="alert"><i class="fa fa-times"></i>
+    <strong>{% trans message  %}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="row justify-content-center">
+    <div class="col-lg-3">
+        <div class="card bg-blue100 text-black border border-primary">
+            <div class="card-header bg-primary p-1" ><h2 class="text-center m-0">{% trans "Chose event" %} {% if next %}({{ next }}){% endif %}</h2></div>
+            <div class="card-body p-1">
+                <form name=concursForm action="" method="POST">{% csrf_token %}
+                    <label class="col-form-label">{% trans "Event" %}: &nbsp;</label><select name="id_event"  onchange="concursForm.submit()">
+                        <option>{% trans "..." %}</option>
+                        {% for row in events %}
+                        {% if row.id == id_event %}
+                        <option value="{{row.id}}" selected>{{row.competition.description}}-{{row.category.description}}-{{row.level.description}}-{{row.program.description}}</option>
+                        {% else %}
+                        <option value="{{row.id}}">{{row.competition.description}}-{{row.category.description}}-{{row.level.description}}-{{row.program.description}}</option>
+                        {% endif %}
+                    {% endfor%}
+                        </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</br>
+{% endblock %}

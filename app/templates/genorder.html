@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block body %}
+{% load i18n %}
+{% load humanize %}
+
+<img src="/static/rollartCAT.png" class="rounded mx-auto d-block">
+<h2 class="text-center">RollartCAT</h2>
+
+{% if message %}
+<div class="alert alert-danger alert-dismissible fade show text-danger" role="alert"><i class="fa fa-times"></i>
+    <strong>{% trans message  %}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="row justify-content-center">
+    <div class="col-lg-3">
+        <div class="card bg-blue100 text-black border border-primary">
+            <div class="card-header bg-primary p-0" ><h2 class="text-center m-0">{% trans "Order generate" %}</h2></div>
+            <div class="card-body p-1">
+                <form name=ordreForm action="" method="POST">{% csrf_token %}
+                    <label class="col-form-label">{% trans "Competition" %}: &nbsp;</label><select name="id_competition"  onchange="ordreForm.submit()">
+                        <option>{% trans "..." %}</option>
+                        {% for row in coms %}
+                        {% if row.id == id_competition %}
+                        <option value="{{row.id}}" selected>{{row.description}}</option>
+                        {% else %}
+                        <option value="{{row.id}}">{{row.description}}</option>
+                        {% endif %}
+                    {% endfor%}
+                        </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</br>
+{% if progress %}
+<div class="row justify-content-center">
+    <div class="col-4">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <h2 class="text-center">{% trans "Generated order" %}</h2>
+</div>
+{% endif %}
+{% endblock %}
